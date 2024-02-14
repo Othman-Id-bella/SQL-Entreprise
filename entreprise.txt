@@ -1,0 +1,85 @@
+mysql: [Warning] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe: ignoring option '--no-beep' due to invalid value ''.
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 13
+Server version: 8.0.19 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show database entreprise;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'database entreprise' at line 1
+mysql> use database entreprise;
+ERROR 1049 (42000): Unknown database 'database'
+mysql> use entreprise;
+Database changed
+mysql> CREATE TABLE clients (
+    ->     id_client INT PRIMARY KEY,
+    -> nom VARCHAR(50),
+    -> prenom VARCHAR(50),
+    -> email VARCHAR(100),
+    -> adresse VARCHAR(255),
+    -> telephone VARCHAR(15)
+    -> );
+Query OK, 0 rows affected (1.45 sec)
+
+mysql> CREATE TABLE produits (
+    -> id_produit INT PRIMARY KEY,
+    -> nom VARCHAR(100),
+    -> description TEXT,
+    -> prix DECIMAL(10, 2),
+    -> stock INT
+    -> );
+Query OK, 0 rows affected (1.69 sec)
+
+mysql> CREATE TABLE commandes (
+    -> id_commande INT PRIMARY KEY,
+    -> id_client INT,
+    -> date_commande DATE,
+    -> statut VARCHAR(20) DEFAULT 'en cours',
+    -> total DECIMAL(10, 2),
+    -> FOREIGN KEY (id_client) REFERENCES clients(id_client),
+    -> CHECK (statut IN ('en cours', 'livrée', 'annulée'))
+    -> );
+Query OK, 0 rows affected (1.50 sec)
+mysql>  desc clients;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| id_client | int          | NO   | PRI | NULL    |       |
+| nom       | varchar(50)  | YES  |     | NULL    |       |
+| prenom    | varchar(50)  | YES  |     | NULL    |       |
+| email     | varchar(100) | YES  |     | NULL    |       |
+| adresse   | varchar(255) | YES  |     | NULL    |       |
+| telephone | varchar(15)  | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql>  desc produits;
++-------------+---------------+------+-----+---------+-------+
+| Field       | Type          | Null | Key | Default | Extra |
++-------------+---------------+------+-----+---------+-------+
+| id_produit  | int           | NO   | PRI | NULL    |       |
+| nom         | varchar(100)  | YES  |     | NULL    |       |
+| description | text          | YES  |     | NULL    |       |
+| prix        | decimal(10,2) | YES  |     | NULL    |       |
+| stock       | int           | YES  |     | NULL    |       |
++-------------+---------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> desc commandes;
++---------------+---------------+------+-----+----------+-------+
+| Field         | Type          | Null | Key | Default  | Extra |
++---------------+---------------+------+-----+----------+-------+
+| id_commande   | int           | NO   | PRI | NULL     |       |
+| id_client     | int           | YES  | MUL | NULL     |       |
+| date_commande | date          | YES  |     | NULL     |       |
+| statut        | varchar(20)   | YES  |     | en cours |       |
+| total         | decimal(10,2) | YES  |     | NULL     |       |
++---------------+---------------+------+-----+----------+-------+
+5 rows in set (0.00 sec)
